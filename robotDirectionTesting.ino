@@ -1,57 +1,63 @@
 //Code to test the direction of mobileDeliveryRobot
 
-int pinI1=1;//define I1 port
-int pinI2=2;//define I2 port
-int pinI3=4;//define I3 port
-int pinI4=8;//define I4 port
-int speedpinA=5;//define EA(PWM speed regulation)port
-int speedpinB=6;//define EB(PWM speed regulation)port
+int I1=1;//define I1 port
+int I2=2;//define I2 port
+int I3=4;//define I3 port
+int I4=8;//define I4 port
+int EA=5;//define EA(PWM speed regulation)port
+int EB=6;//define EB(PWM speed regulation)port
 void setup()
 {
-pinMode(pinI1,OUTPUT);//define this port as output
-pinMode(pinI2,OUTPUT);//define this port as output
-pinMode(pinI3,OUTPUT);//define this port as output
-pinMode(pinI4,OUTPUT);//define this port as output
-pinMode(speedpinA,OUTPUT);
-pinMode(speedpinB,OUTPUT);
+pinMode(I1,OUTPUT);//define this port as output
+pinMode(I2,OUTPUT);//define this port as output
+pinMode(I3,OUTPUT);//define this port as output
+pinMode(I4,OUTPUT);//define this port as output
+pinMode(EA,OUTPUT);
+pinMode(EB,OUTPUT);
 }
 void loop()
 {
-//Forward
-analogWrite(speedpinA,100);//input a value to set the speed
-analogWrite(speedpinB,100);//input a value to set the speed
-delay(2000);
-digitalWrite(pinI1,HIGH);
-digitalWrite(pinI2,LOW);
-digitalWrite(pinI3,LOW);
-digitalWrite(pinI4,HIGH);
+  int u; // A variable for the motor PWM command [0-255]
 
-//Backward
-analogWrite(speedpinA,100);//input a value to set the speed
-analogWrite(speedpinB,100);//input a value to set the speed
-delay(2000);
-digitalWrite(pinI1,LOW);
-digitalWrite(pinI2,HIGH);
-digitalWrite(pinI3,HIGH);
-digitalWrite(pinI4,LOW);
-
-//Turn Left
-analogWrite(speedpinA,100);//input a value to set the speed
-analogWrite(speedpinB,100);//input a value to set the speed
-delay(2000);
-digitalWrite(pinI1,HIGH);
-digitalWrite(pinI2,LOW);
-digitalWrite(pinI3,HIGH);
-digitalWrite(pinI4,LOW);
-
-//Turn Right
-analogWrite(speedpinA,100);//input a value to set the speed
-analogWrite(speedpinB,100);//input a value to set the speed
-delay(2000);
-digitalWrite(pinI1,LOW);
-digitalWrite(pinI2,HIGH);
-digitalWrite(pinI3,LOW);
-digitalWrite(pinI4,HIGH);
+    // Play with this code to write open loop commands to a wheel motor
+    for (u = 125; u <= 255; u += 125)
+    {
+      //Forward
+      analogWrite(EA,u);//input a value to set the speed
+      analogWrite(EB,u);//input a value to set the speed
+      digitalWrite(I1,HIGH);
+      digitalWrite(I2,LOW);
+      digitalWrite(I3,LOW);
+      digitalWrite(I4,HIGH);
+      delay(2000);
+      
+      //Backward
+      analogWrite(EA,u);//input a value to set the speed
+      analogWrite(EB,u);//input a value to set the speed
+      digitalWrite(I1,LOW);
+      digitalWrite(I2,HIGH);
+      digitalWrite(I3,HIGH);
+      digitalWrite(I4,LOW);
+      delay(2000);
+      
+      //Turn Left
+      analogWrite(EA,u);//input a value to set the speed
+      analogWrite(EB,u);//input a value to set the speed
+      digitalWrite(I1,HIGH);
+      digitalWrite(I2,LOW);
+      digitalWrite(I3,HIGH);
+      digitalWrite(I4,LOW);
+      delay(2000);
+      
+      //Turn Right
+      analogWrite(EA,u);//input a value to set the speed
+      analogWrite(EB,u);//input a value to set the speed
+      
+      digitalWrite(I1,LOW);
+      digitalWrite(I2,HIGH);
+      digitalWrite(I3,LOW);
+      digitalWrite(I4,HIGH);
+      delay(2000);
+    }
 
 }
-
