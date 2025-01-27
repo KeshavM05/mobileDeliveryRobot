@@ -11,7 +11,7 @@
 
 // Wheel PWM pin (must be a PWM pin)
 int EA = 2;
-int EB = 11;
+int EB = 5;
 
 // Wheel direction digital pins
 int I1 = 3;
@@ -57,7 +57,7 @@ double v_R = 0.0;
 const int T = 1000;
 
 // Variable to store vehicle's track length
-const double ELL = 0.2775
+const double ELL = 0.2775;
 
 // Counters for milliseconds during interval
 long t_now = 0;
@@ -92,6 +92,22 @@ void decodeRightEncoderTicks()
         right_encoder_ticks++;
     }
 }
+
+// Compute vehicle speed [m/s]
+double compute_vehicle_speed(double v_L, double v_R)
+{
+  double v;
+  v = 0.5 * (v_L + v_R);
+  return v;
+}
+// Compute vehicle turning rate [rad/s]
+double compute_vehicle_rate(double v_L, double v_R)
+{
+  double omega;
+  omega = 1.0 / ELL * (v_R - v_L);
+  return omega;
+}
+
 
 void setup()
 {
@@ -138,35 +154,23 @@ void loop()
         v_L = RHO * omega_L;
         v_R = RHO * omega_R;
 
-        // Compute vehicle speed [m/s]
-        double compute_vehicle_speed(double v_L, double v_R)
-        {
-          double v;
-          v = 0.5 * (v_L + v_R);
-          return v;
-        }
-        // Compute vehicle turning rate [rad/s]
-        double compute_vehicle_rate(double v_L, double v_R)
-        {
-          double omega;
-          omega = 1.0 / ELL * (v_R - v_L);
-          return omega;
-        }
-
         // Print some stuff to the serial monitor
-        Serial.print("Left Encoder ticks: ");
-        Serial.print(left_encoder_ticks);
-        Serial.print("\n");
         Serial.print("Estimated left wheel speed: ");
         Serial.print(omega_L);
         Serial.print(" rad/s");
         Serial.print("\n");
-        Serial.print("Right Encoder ticks: ");
-        Serial.print(right_encoder_ticks);
+        Serial.print("Estimated left translational speed: ");
+        Serial.print(v_L);
+        Serial.print(" m/s");
         Serial.print("\n");
+
         Serial.print("Estimated right wheel speed: ");
         Serial.print(omega_R);
         Serial.print(" rad/s");
+        Serial.print("\n");
+        Serial.print("Estimated right translational speed: ");
+        Serial.print(v_R);
+        Serial.print(" m/s");
         Serial.print("\n\n");
 
         // Record the current time [ms]
@@ -181,10 +185,10 @@ void loop()
     u = 228;
 
     // Select a direction
-    digitalWrite(I1, LOW);
-    digitalWrite(I2, HIGH);
-    digitalWrite(I3, LOW);
-    digitalWrite(I4, HIGH);
+    digitalWrite(I1, HIGH);
+    digitalWrite(I2, LOW);
+    digitalWrite(I3, HIGH);
+    digitalWrite(I4, LOW);
 
     // PWM command to the motor driver
     analogWrite(EA, u);
