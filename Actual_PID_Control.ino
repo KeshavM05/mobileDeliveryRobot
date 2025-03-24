@@ -36,7 +36,7 @@ double Kp = 50;
 double Ki = 5;
 double error_L = 0, error_R = 0;
 double integral_L = 0, integral_R = 0;
-double desired_speed = 0.5; // Target speed in m/s
+double desired_speed = 1.2; // Target speed in m/s
 byte u_L = 0, u_R = 0;
 
 // Encoder ticks per (motor) revolution (TPR)
@@ -203,8 +203,8 @@ void loop()
     u = 228;
 
     // Select a direction
-    digitalWrite(I1, HIGH);
-    digitalWrite(I2, LOW);
+    digitalWrite(I1, LOW);
+    digitalWrite(I2, HIGH);
     digitalWrite(I3, HIGH);
     digitalWrite(I4, LOW);
 
